@@ -1,0 +1,64 @@
+name: Pre-Release
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+
+  pre_release:
+    name: Pre-Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check /prerelease keyword and exit if there's no match
+      run: echo "$issue_comment_body" | grep '^/prerelease$'
+      env:
+        issue_comment_body: ${{ github.event.comment.body }}
+
+    - name: Setup node
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: 14
+    
+    - name: Install standard-version
+      run: npm install -g standard-version
+      
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        ref: master
+    
+    - name: Setup git id
+      run: |
+        git config --global user.name 'release-bot'
+        git config --global user.email 'aperdana@users.noreply.github.com'
+    
+    - name: Get changelog
+      id: get_changelog
+      run: echo ::set-output name=changelog::`standard-version --prerelease rc --dry-run | sed -n '/^---$/,/^---$/p' | grep -v '^---$'`
+    
+    - name: output changelog
+      run: echo "$changelog"
+      env:
+        changelog: ${{ steps.get_changelog.outputs.changelog }}
+    
+    - name: update issue
+      uses: octokit/request-action@v2.x
+      with:
+        route: PATCH /repos/:repository/issues/:issue_number
+        repository: ${{ github.repository }}
+        issue_number: ${{ github.event.issue.number }}
+        body: |
+          |
+          # Changelog
+
+          ${{ steps.get_changelog.outputs.changelog }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Create pre-release
+      run: standard-version --prerelease rc
+      
+    - name: Push the tag
+      run: |
+        git push --follow-tags origin master
