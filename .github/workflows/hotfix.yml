@@ -39,7 +39,7 @@ jobs:
       with:
         ref: ${{ steps.extract_ref.outputs.ref }}
         fetch-depth: 0
-      if: ${{ steps.extract_ref.outputs.ref != "" && steps.extract_ref.outputs.ref != "master" }}
+      if: ${{ steps.extract_ref.outputs.ref != '' && steps.extract_ref.outputs.ref != 'master' }}
     
     - name: Setup git ID
       run: |
