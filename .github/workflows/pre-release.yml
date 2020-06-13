@@ -1,0 +1,20 @@
+name: Pre-Release
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+
+  pre_release:
+    name: Pre-Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup node
+      uses: actions/setup-node@v2
+    
+    - name: Install standard-version
+      run: npm install -g standard-version
+    
+    - name: Create pre-release
+      run: standard-version --pre-release --dry-run
