@@ -19,7 +19,10 @@ jobs:
       id: extract_ref
       run: |
         command=`echo "$issue_comment_body" | egrep -c 1 '^/hotfix [^ ]+$' | sed -r 's/\/hotfix //g'`
-        ref=`echo "$command" | egrep '^/hotfix [[:alnum:]]+$' | sed -r -e 's/\/hotfix //g'`
+        ref=`echo "$command" | egrep '^/hotfix [^ ]+$' | sed -r -e 's/\/hotfix //g'`
+        if [[ -z ref ]]; then
+          exit 1
+        fi
         echo "::set-output name=ref::$ref"
       env:
         issue_comment_body: ${{ github.event.comment.body }}
