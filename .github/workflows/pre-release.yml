@@ -28,6 +28,9 @@ jobs:
       with:
         ref: master
     
+    - name: Output HEAD sha
+      run: git rev-parse HEAD
+    
     - name: Setup git id
       run: |
         git config --global user.name 'release-bot'
@@ -47,7 +50,14 @@ jobs:
       run: echo "$changelog"
       env:
         changelog: ${{ steps.get_changelog.outputs.changelog }}
-    
+
+    - name: Create pre-release
+      run: standard-version --prerelease rc
+      
+    - name: Push the tag
+      run: |
+        git push --follow-tags origin master
+
     - name: update issue
       uses: octokit/request-action@v2.x
       with:
@@ -61,10 +71,3 @@ jobs:
           ${{ steps.get_changelog.outputs.changelog }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
-
-    - name: Create pre-release
-      run: standard-version --prerelease rc
-      
-    - name: Push the tag
-      run: |
-        git push --follow-tags origin master
