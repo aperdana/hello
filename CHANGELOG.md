@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/aperdana/hello/compare/v1.0.1-rc.2...v1.0.1) (2020-06-13)
+
+
+### Others
+
+* **build:** add release workflow ([7356ccc](https://github.com/aperdana/hello/commit/7356ccc4b7ee5617a6289e1efaeaa780309a4759))
+* **build:** remove debugging steps ([f382b32](https://github.com/aperdana/hello/commit/f382b32384320849b11f097b2fec68d2144bc7d3))
+
 ### [1.0.1-rc.2](https://github.com/aperdana/hello/compare/v1.0.1-rc.1...v1.0.1-rc.2) (2020-06-13)
 
 ### [1.0.1-rc.1](https://github.com/aperdana/hello/compare/v1.0.1-rc.0...v1.0.1-rc.1) (2020-06-13)
