@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Others
 
+* **build:** change depth to 0 ([733f279](https://github.com/aperdana/hello/commit/733f2795214baa1fd76c2aab2682e18bc433c4a1))
+
+### 1.0.1-rc.0 (2020-06-13)
+
+
+### Others
+
 * **build:** change fetch depth to 1k ([d658172](https://github.com/aperdana/hello/commit/d658172a7a1ec107e7b1c62033da1dd295a15ea3))
 
 ## 1.0.0 (2020-06-13)
