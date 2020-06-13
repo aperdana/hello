@@ -1,0 +1,75 @@
+name: Hotfix
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+
+  pre_release:
+    name: Hotfix
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check /hotfix keyword and exit if there's no match
+      run: echo "$issue_comment_body" | egrep '^/hotfix [[:alnum:]]+$'
+      env:
+        issue_comment_body: ${{ github.event.comment.body }}
+    
+    - name: Extract ref
+      id: extract_ref
+      run: |
+        command=`echo "$issue_comment_body" | egrep -c 1 '^/hotfix [[:alnum:]]+$' | sed -r 's/\/hotfix //g'`
+        ref=`echo "$command" | egrep '^/hotfix [[:alnum:]]+$' | sed -r -e 's/\/hotfix //g'`
+        echo "::set-output name=ref::$ref"
+      env:
+        issue_comment_body: ${{ github.event.comment.body }}
+
+    - name: Setup node
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: 14
+    
+    - name: Install standard-version
+      run: npm install -g standard-version
+      
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ steps.extract_ref.outputs.ref }}
+        fetch-depth: 0
+    
+    - name: Setup git ID
+      run: |
+        git config --global user.name 'release-bot'
+        git config --global user.email 'aperdana@users.noreply.github.com'
+    
+    - name: Get changelog
+      id: get_changelog
+      run: |
+        changelog=`standard-version --dry-run | sed -n '/^---$/,/^---$/p' | grep -v '^---$'`
+        changelog="${changelog//'%'/'%25'}"
+        changelog="${changelog//$'\n'/'%0A'}"
+        changelog="${changelog//$'\r'/'%0D'}"
+        echo "$changelog"
+        echo "::set-output name=changelog::$changelog"
+
+    - name: Create pre-release
+      run: standard-version
+      
+    - name: Push the tag
+      run: |
+        git push --follow-tags origin master
+
+    - name: update issue
+      uses: octokit/request-action@v2.x
+      with:
+        route: PATCH /repos/:repository/issues/:issue_number
+        repository: ${{ github.repository }}
+        issue_number: ${{ github.event.issue.number }}
+        body: |
+          |
+          # Changelog
+
+          ${{ steps.get_changelog.outputs.changelog }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
