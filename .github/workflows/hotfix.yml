@@ -22,6 +22,7 @@ jobs:
         if [[ -z $ref ]]; then
           exit 1
         fi
+        echo "ref=$ref"
         echo "::set-output name=ref::$ref"
       env:
         issue_comment_body: ${{ github.event.comment.body }}
