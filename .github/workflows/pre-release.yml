@@ -23,16 +23,13 @@ jobs:
     - name: Install standard-version
       run: npm install -g standard-version
       
-    - name: Check out code into the Go module directory
+    - name: Check out code
       uses: actions/checkout@v2
       with:
         ref: master
         fetch-depth: 0
     
-    - name: Output HEAD sha
-      run: git rev-parse HEAD
-    
-    - name: Setup git id
+    - name: Setup git ID
       run: |
         git config --global user.name 'release-bot'
         git config --global user.email 'aperdana@users.noreply.github.com'
@@ -46,11 +43,6 @@ jobs:
         changelog="${changelog//$'\r'/'%0D'}"
         echo "$changelog"
         echo "::set-output name=changelog::$changelog"
-    
-    - name: output changelog
-      run: echo "$changelog"
-      env:
-        changelog: ${{ steps.get_changelog.outputs.changelog }}
 
     - name: Create pre-release
       run: standard-version --prerelease rc
