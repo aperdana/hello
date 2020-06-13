@@ -35,7 +35,7 @@ jobs:
     
     - name: Get changelog
       id: get_changelog
-      run: echo ::set-output name=changelog::`standard-version --prerelease rc --dry-run | sed -n '/^---$/,/^---$/p' | grep -v '^---$'`
+      run: echo "::set-output name=changelog::`standard-version --prerelease rc --dry-run | sed -n '/^---$/,/^---$/p' | grep -v '^---$'`"
     
     - name: output changelog
       run: echo "$changelog"
