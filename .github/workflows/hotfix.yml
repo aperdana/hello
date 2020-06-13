@@ -18,9 +18,9 @@ jobs:
     - name: Extract ref
       id: extract_ref
       run: |
-        command=`echo "$issue_comment_body" | egrep -c 1 '^/hotfix [^ ]+$' | sed -r 's/\/hotfix //g'`
+        command=`echo "$issue_comment_body" | egrep '^/hotfix [^ ]+$' | sed -r 's/\/hotfix //g'`
         ref=`echo "$command" | egrep '^/hotfix [^ ]+$' | sed -r -e 's/\/hotfix //g'`
-        if [[ -z ref ]]; then
+        if [[ -z $ref ]]; then
           exit 1
         fi
         echo "::set-output name=ref::$ref"
