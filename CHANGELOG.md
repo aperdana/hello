@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/aperdana/hello/compare/v1.0.1...v1.0.2) (2020-06-13)
+
+
+### Bug Fixes
+
+* **halo:** fix bug ([880ddfd](https://github.com/aperdana/hello/commit/880ddfd45623df3c2ed0fd11096c1dd361e56d5b))
+
 ### [1.0.1](https://github.com/aperdana/hello/compare/v1.0.1-rc.2...v1.0.1) (2020-06-13)
 
 
