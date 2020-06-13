@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.1-rc.0 (2020-06-13)
+
+
+### Others
+
+* **build:** change fetch depth to 1k ([d658172](https://github.com/aperdana/hello/commit/d658172a7a1ec107e7b1c62033da1dd295a15ea3))
+
 ## 1.0.0 (2020-06-13)
 
 
