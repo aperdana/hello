@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check /hotfix keyword and exit if there's no match
-      run: echo "$issue_comment_body" | egrep '^/hotfix [[:alnum:]]+$'
+      run: echo "$issue_comment_body" | egrep '^/hotfix [^ ]+$'
       env:
         issue_comment_body: ${{ github.event.comment.body }}
     
     - name: Extract ref
       id: extract_ref
       run: |
-        command=`echo "$issue_comment_body" | egrep -c 1 '^/hotfix [[:alnum:]]+$' | sed -r 's/\/hotfix //g'`
+        command=`echo "$issue_comment_body" | egrep -c 1 '^/hotfix [^ ]+$' | sed -r 's/\/hotfix //g'`
         ref=`echo "$command" | egrep '^/hotfix [[:alnum:]]+$' | sed -r -e 's/\/hotfix //g'`
         echo "::set-output name=ref::$ref"
       env:
